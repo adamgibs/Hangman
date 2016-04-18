@@ -10,7 +10,7 @@ class Hangman
 		@wrong_letters = []
 	end
 
-	def play
+		def play
 		welcome
 		word = word(dict).downcase.chomp
 		word_array = word.chomp.split("")
@@ -26,16 +26,29 @@ class Hangman
 			unless word_array.include? guess
 				turns -= 1
 			end
-			if word_array == board || guess == word_array 
-				puts "Congratulations, you've won!"
+			if won?(word_array, board, guess)
+				won_message
 				break
 			end
 		end
-		unless word_array == board || guess == word_array
-			puts "I'm sorry. You have lost."
-			puts "The secret word was \'#{word}\'"
+		unless won?(word_array, board, guess)
+			loss_message(word)
 		end
 	end
+
+	def won_message
+		puts "Congratulations, you've won!"
+	end
+
+	def loss_message(word)
+		puts "I'm sorry. You have lost."
+		puts "The secret word was \'#{word}\'"
+	end
+
+	def won?(word_array, board, guess)
+		word_array == board || guess == word_array
+	end
+
 
 	def turns_left(num)
 		until num == 0 do
